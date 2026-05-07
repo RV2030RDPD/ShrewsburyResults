@@ -621,7 +621,7 @@ function renderPrecBreakdown(yr,tp,candidates){
 
   destroyChart('precRaceChart');
   charts['precRaceChart']=new Chart(document.getElementById('precRaceChart'),{
-    type:'bar',plugins:[ChartDataLabels],
+    type:'bar',
     data:{labels:sortedPrecIdx.map(i=>'PR '+(i+1)),datasets},
     options:{
       responsive:true,maintainAspectRatio:false,
@@ -763,11 +763,14 @@ function renderHistory(){
 }
 function clearLog(){if(confirm('Remove all custom entries?')){customEntries=[];try{localStorage.removeItem('shrews_elections');}catch(e){}renderHistory();}}
 
-function initDashboard(){
-  initTurnoutLine();
-  renderHistory();
+// Register ChartDataLabels globally
+if(typeof ChartDataLabels !== 'undefined'){
+  Chart.register(ChartDataLabels);
 }
-window.addEventListener('DOMContentLoaded', initDashboard);
+
+// Scripts are at bottom of body — DOM is already ready, call directly
+initTurnoutLine();
+renderHistory();
 </script>
 </body>
 </html>
